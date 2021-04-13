@@ -18,7 +18,7 @@
     let isOpen = false;
 </script>
 
-<Header company="IBM" platformName="Carbon Svelte" bind:isSideNavOpen>
+<Header company="KIT" platformName="Carbon Design" href="/" bind:isSideNavOpen>
     <div slot="skip-to-content">
         <SkipToContent />
     </div>
@@ -40,7 +40,7 @@
 
 <SideNav bind:isOpen={isSideNavOpen}>
     <SideNavItems>
-        <SideNavLink text="Link 1" />
+        <SideNavLink text="Contacts" href="/contacts" />
         <SideNavLink text="Link 2" />
         <SideNavLink text="Link 3" />
         <SideNavMenu text="Menu">

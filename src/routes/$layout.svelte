@@ -7,7 +7,7 @@
 	import { Content } from 'carbon-components-svelte';
 </script>
 
-<Theme theme="white">
+<Theme theme="g100">
 	<UIshell />
 	<Content>
 		<slot />
