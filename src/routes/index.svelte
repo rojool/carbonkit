@@ -13,7 +13,7 @@
 <Grid>
 	<Row>
 		<Column>
-			<h1>Hello CarbonKit</h1>
+			<h1>Hello User</h1>
 		</Column>
 	</Row>
 </Grid>

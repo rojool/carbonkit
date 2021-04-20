@@ -1,52 +1,45 @@
 <script>
     import {
         Header,
-        HeaderUtilities,
-        HeaderAction,
-        HeaderPanelLinks,
-        HeaderPanelDivider,
-        HeaderPanelLink,
         SideNav,
         SideNavItems,
-        SideNavMenu,
-        SideNavMenuItem,
         SideNavLink,
         SkipToContent,
+        HeaderUtilities,
+        Toggle
     } from 'carbon-components-svelte';
+    import { getContext } from "svelte";
 
     let isSideNavOpen = false;
-    let isOpen = false;
+
+    const ctx = getContext("Theme");
+    let isdark;
+    let toggled;
+
+    const switchTheme = () => {
+        var oppositeTheme = (isdark) ? "g10" : "g100"
+        ctx.carbon_theme.set(oppositeTheme)
+    }
+
+    $: if (ctx) {
+        ctx.dark.subscribe((value) => {
+            isdark = toggled = value;
+        });
+    }
 </script>
 
-<Header company="KIT" platformName="Carbon Design" href="/" bind:isSideNavOpen>
+<Header company="SMART" platformName="Carbon Design" href="." bind:isSideNavOpen>
     <div slot="skip-to-content">
         <SkipToContent />
     </div>
     <HeaderUtilities>
-        <HeaderAction bind:isOpen>
-            <HeaderPanelLinks>
-                <HeaderPanelDivider>Switcher subject 1</HeaderPanelDivider>
-                <HeaderPanelLink>Switcher item 1</HeaderPanelLink>
-                <HeaderPanelDivider>Switcher subject 2</HeaderPanelDivider>
-                <HeaderPanelLink>Switcher item 1</HeaderPanelLink>
-                <HeaderPanelLink>Switcher item 2</HeaderPanelLink>
-                <HeaderPanelLink>Switcher item 3</HeaderPanelLink>
-                <HeaderPanelLink>Switcher item 4</HeaderPanelLink>
-                <HeaderPanelLink>Switcher item 5</HeaderPanelLink>
-            </HeaderPanelLinks>
-        </HeaderAction>
+        <Toggle size="sm" labelA="Light" labelB="Dark" bind:toggled on:change={switchTheme} />
     </HeaderUtilities>
 </Header>
 
 <SideNav bind:isOpen={isSideNavOpen}>
     <SideNavItems>
-        <SideNavLink text="Contacts" href="/contacts" />
-        <SideNavLink text="Link 2" />
-        <SideNavLink text="Link 3" />
-        <SideNavMenu text="Menu">
-            <SideNavMenuItem href="/" text="Link 1" />
-            <SideNavMenuItem href="/" text="Link 2" />
-            <SideNavMenuItem href="/" text="Link 3" />
-        </SideNavMenu>
+        <SideNavLink text="Contacts" href="contacts" />
+        <SideNavLink text="Dossiers" href="dossiers" />
     </SideNavItems>
 </SideNav>

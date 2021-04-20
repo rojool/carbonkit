@@ -7,7 +7,11 @@
 	import { Content } from 'carbon-components-svelte';
 </script>
 
-<Theme theme="g100">
+<svelte:head>
+	<title>Smart Carbon Design</title>
+</svelte:head>
+
+<Theme>
 	<UIshell />
 	<Content>
 		<slot />
