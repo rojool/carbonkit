@@ -1,20 +1,2 @@
-<script>
-	import {
-		Grid,
-		Row,
-		Column,
-	} from 'carbon-components-svelte';
-</script>
-
-<svelte:head>
-	<title>Hello</title>
-</svelte:head>
-
-<Grid>
-	<Row>
-		<Column>
-			<h1>Hello User</h1>
-		</Column>
-	</Row>
-</Grid>
-
+<h1>Welcome to SvelteKit</h1>
+<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
