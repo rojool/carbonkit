@@ -23,7 +23,8 @@ h1 {
 .bx--cc--axes g.axis g.tick text,
 div.bx--cc--legend div.legend-item p,
 .bx--cc--axes g.axis g.tick text,
-.bx--cc--chart-wrapper text {
+.bx--cc--chart-wrapper text,
+.bx--chart-holder .bx--overflow-menu__icon {
     color: var(--cds-text-01) !important;
     fill: var(--cds-text-01) !important;
 }
