@@ -19,6 +19,24 @@ h1 {
     margin-bottom: 1rem;
 }
 
+.bx--cc--title p.title,
+.bx--cc--axes g.axis g.tick text,
+div.bx--cc--legend div.legend-item p,
+.bx--cc--axes g.axis g.tick text {
+    color: var(--cds-text-01) !important;
+    fill: var(--cds-text-01) !important;
+}
+
+.bx--cc--grid rect.chart-grid-backdrop {
+    fill: var(--cds-background) !important;
+}
+
+.bx--cc--grid rect.chart-grid-backdrop.stroked,
+.bx--cc--grid g.x.grid g.tick line,
+.bx--cc--grid g.y.grid g.tick line{
+    stroke: var(--cds-active-01) !important;
+}
+
 .bx--side-nav~.bx--content
 {
     margin-left: 0rem;
