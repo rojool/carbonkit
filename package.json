@@ -1,7 +1,8 @@
 {
   "name": "carbonkit",
   "version": "0.0.1",
-  "homepage": "https://github.com/myangga/carbonkit",
+  "homepage": "https://carbonkit.vercel.app/",
+  "repository": "github:myangga/carbonkit",
   "license": "UNLICENSED",
   "scripts": {
     "dev": "svelte-kit dev",
