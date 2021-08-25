@@ -19,7 +19,7 @@
 </script>
 
 <svelte:head>
-    <title>FS Oversight</title>
+    <title>Carbon Kit</title>
 </svelte:head>
 
 <Theme bind:theme persist persistKey="__carbon-theme">
