@@ -2,6 +2,10 @@
 
 This is a template project for creating SvelteKit application with IBM Carbon Design System implementation.
 
+> This is a work in progress
+
+> Just started to implement Supabase https://supabase.io/ to get/send data with CarbonKit
+
 ## Clone project
 
 ```bash

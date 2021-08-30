@@ -14,12 +14,15 @@
   "devDependencies": {
     "@carbon/charts-svelte": "^0.45.1",
     "@sveltejs/adapter-vercel": "^1.0.0-next.27",
-    "@sveltejs/kit": "^1.0.0-next.156",
+    "@sveltejs/kit": "^1.0.0-next.159",
     "carbon-components-svelte": "^0.42.2",
     "d3": "^7.0.1",
     "prettier": "~2.2.1",
-    "prettier-plugin-svelte": "^2.2.0",
-    "svelte": "^3.34.0"
+    "prettier-plugin-svelte": "^2.4.0",
+    "svelte": "^3.42.4"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^1.22.4"
+  }
 }

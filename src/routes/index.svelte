@@ -2,6 +2,10 @@
     import { ClickableTile } from "carbon-components-svelte";
 </script>
 
+<svelte:head>
+  <title>Welcome</title>
+</svelte:head>
+
 <h1>Welcome to CarbonKit</h1>
 <p>This is a test repository to implement and customize Carbon Design System on SvelteKit.</p>
 <p>&nbsp;</p>
