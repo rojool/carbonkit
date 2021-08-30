@@ -1,5 +1,6 @@
 <script>
   import supabase from '$lib/db';
+  import Delete16 from "carbon-icons-svelte/lib/Delete16";
   import {
     InlineLoading,
     InlineNotification,
@@ -11,6 +12,7 @@
     ToolbarSearch,
     ToolbarMenu,
     ToolbarMenuItem,
+    ToolbarBatchActions,
     Form,
     TextInput,
     Select,
@@ -31,6 +33,8 @@
     {key: 'email', value: 'Email'},
     {key: 'type', value: 'Type'},
   ];
+
+  let selectedRowIds = [];
 
   async function getData() {
     const { data, error } = await supabase
@@ -77,8 +81,11 @@
   {#if data.length == 0}
     <InlineNotification kind="info" title="Information" subtitle="No data to display" hideCloseButton=true />
   {:else}
-    <DataTable headers={contacts_headers} rows={data}>
+    <DataTable batchSelection bind:selectedRowIds headers={contacts_headers} rows={data}>
       <Toolbar>
+        <ToolbarBatchActions>
+          <Button icon={Delete16}>Delete</Button>
+        </ToolbarBatchActions>
         <ToolbarContent>
           <ToolbarSearch />
           <ToolbarMenu>
