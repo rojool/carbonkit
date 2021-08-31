@@ -66,9 +66,9 @@
         <SideNavLink icon={Dashboard16} text="Dashboard" href="/dashboard" isSelected={$page.path == '/dashboard'} />
         <SideNavLink icon={GatewayUserAccess16} text="Activities" href="/activities" isSelected={$page.path == '/activities'} />
         <SideNavDivider />
-        <SideNavLink icon={Wallet16} text="Leads" href="/leads" isSelected={$page.path == '/leads'} />
         <SideNavLink icon={Enterprise16} text="Companies" href="/companies" isSelected={$page.path == '/companies'} />
         <SideNavLink icon={Collaborate16} text="Contacts" href="/contacts" isSelected={$page.path == '/contacts'} />
+        <SideNavLink icon={Wallet16} text="Leads" href="/leads" isSelected={$page.path == '/leads'} />
         <SideNavDivider />
         <SideNavLink icon={DataFormat16} text="Campaigns" href="/campaigns" isSelected={$page.path == '/campaigns'} />
         <SideNavLink icon={Task16} text="Tasks" href="/tasks" isSelected={$page.path == '/tasks'} />

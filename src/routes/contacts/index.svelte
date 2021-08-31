@@ -41,7 +41,6 @@
     .from('contacts')
     .select()
     if (error) throw new Error(error.message)
-    // console.log(data)
     return data
   }
 
@@ -69,9 +68,9 @@
   {#await sendData()}
     <InlineLoading description="Sending data..." />
   {:then data}
-    <InlineNotification kind="success" title="Error:" subtitle="Succesfully sent data." hideCloseButton=false />
+    <InlineNotification kind="success" title="Success:" subtitle="Succesfully sent data." hideCloseButton=false />
   {:catch error}
-    <InlineNotification title="Error:" subtitle="Something went wrong while sending the data. {error}" hideCloseButton=false />
+    <InlineNotification kind="error" title="Error:" subtitle="Something went wrong while sending the data. {error}" hideCloseButton=false />
   {/await}
 {/if}
 

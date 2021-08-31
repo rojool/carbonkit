@@ -12,4 +12,32 @@ export class Contact {
         this.type = type;
     }
 
+    getFullname() {
+        return this.firstname + ' ' + this.lastname;
+    }
+
+    async insert(contact) {
+        try {
+            return true
+        } catch (error) {
+            return false
+        }
+    }
+
+    async update() {
+        try {
+            return true
+        } catch (error) {
+            return false
+        }
+    }
+
+    async delete() {
+        try {
+            return true
+        } catch (error) {
+            return false
+        }
+    }
+
 }
