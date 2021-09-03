@@ -22,6 +22,9 @@
   } from 'carbon-components-svelte'
 
   let promise = Company.getAllCompanies()
+
+  const subscriptions = supabase.getSubscriptions()
+  console.log(subscriptions)
   const subscription = supabase
         .from('companies')
         .on('*', payload => {

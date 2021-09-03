@@ -38,14 +38,6 @@
   ];
 
   let selectedRowIds = [];
-  const mySubscription = supabase
-    .from('*')
-    .on('*', payload => {
-      console.log('Change received!', payload)
-      if (payload.eventType == 'INSERT') console.log('INSERT')
-      if (payload.eventType == 'DELETE') console.log('DELETE')
-    })
-    .subscribe()
 
   $: console.table(rows)
   // $: console.log("selectedRowIds", selectedRowIds);

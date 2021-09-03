@@ -17,13 +17,11 @@ export class Contact {
     }
 
     static async getContacts () {
-        const mySubscription = supabase
-            .from('contacts')
-            .on('*', payload => {
-                console.log('Change received!', payload)
-            })
-            .subscribe()
-        return mySubscription
+        try {
+            return true
+        } catch (error) {
+            return false
+        }
     }
 
     async insert(contact) {

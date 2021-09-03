@@ -7,15 +7,6 @@ export class Company {
         this.numero_tva = numero_tva ?? ''
     }
 
-    static subscribe() {
-        const subscription = supabase
-            .from('companies')
-            .on('*', payload => {
-                return payload
-            })
-            .subscribe()
-    }
-
     static async getAllCompanies() {
         const {data, error} = await supabase
             .from('companies')
