@@ -36,7 +36,7 @@
         title: 'Start adding some companies',
         description: 'Your company list is empty. Please click on <strong>Create new company</strong> to start.',
         actionText: 'Create a new company',
-        annexe: 'You also can ',
+        annexe: 'You can also ',
         linkHref: '/contacts',
         linkText: 'create new contact'
     }
@@ -128,7 +128,10 @@
 
 <Modal
   bind:open
-  modalHeading="Create company"
+  hasForm=true
+  hasScrollingContent=true
+  shouldSubmitOnEnter=false
+  modalHeading="Create new company"
   primaryButtonText="Confirm"
   secondaryButtonText="Cancel"
   on:click:button--secondary={() => {open = false}}

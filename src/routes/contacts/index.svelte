@@ -32,14 +32,13 @@
   let insert_error = ''
   let delete_error = ''
   let open = false
-  let rows = []
   let selectedRowIds = []
   // Set empty texts and actions for intial state
   const contact_empty = {
         title: 'Start adding some contacts',
         description: 'Your contact list is empty. Please click on <strong>Create new contact</strong> to start.',
         actionText: 'Create a new contact',
-        annexe: 'You also can ',
+        annexe: 'You can also ',
         linkHref: '/contacts',
         linkText: 'create new contact'
     }
@@ -132,7 +131,10 @@
 
 <Modal
   bind:open
-  modalHeading="Create contact"
+  hasForm=true
+  hasScrollingContent=true
+  shouldSubmitOnEnter=false
+  modalHeading="Create new contact"
   primaryButtonText="Confirm"
   secondaryButtonText="Cancel"
   on:click:button--secondary={() => {open = false}}

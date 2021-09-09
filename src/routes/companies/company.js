@@ -33,7 +33,9 @@ export class Company {
     }
 
     async insert () {
-        if (!this.name || this.name.length < 1) return
+        if (!this.name || this.name.length < 1) throw new Error('Missing company name')
+        if (!this.numero_registre || this.numero_registre.length < 1) throw new Error('Missing company unique identifier')
+        if (!this.numero_tva || this.numero_tva.length < 1) throw new Error('Missing company VAT number')
         const { data, error } = await supabase
             .from('companies')
             .insert([this])
