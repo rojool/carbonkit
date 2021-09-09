@@ -40,8 +40,8 @@
   const companies_headers = [
     {key: 'id', value: 'ID'},
     {key: 'name', value: 'Name'},
-    {key: 'numero_registre', value: 'Numéro de Registre'},
-    {key: 'numero_tva', value: 'Numéro TVA'},
+    {key: 'numero_registre', value: 'Unique identifier'},
+    {key: 'numero_tva', value: 'VAT number'},
   ]
   // function: create new company
   async function createCompany () {
