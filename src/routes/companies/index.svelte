@@ -25,6 +25,8 @@
   let name = ''
   let numero_registre = ''
   let numero_tva = ''
+  let insert_error = ''
+  let delete_error = ''
   let open = false
   let selectedRowIds = []
   // Set empty texts and actions for intial state
@@ -56,6 +58,9 @@
         // close modal
         open = false
       })
+      .catch(error=>{
+          insert_error = error
+        })
   }
   // function: batch delete companies
   async function deleteCompanies () {
@@ -67,6 +72,10 @@
         .then(()=>{
           // throw back to console for testing
           console.log('%s deleted', id)
+        })
+        .catch(error=>{
+          delete_error = error
+          console.log('error on delete: ', error)
         })
     });
     // reset selection after deletion
@@ -88,6 +97,13 @@
   {#if $Companies.length < 1}
      <EmptyState emptyData={company_empty} bind:modalAddOpen={open}></EmptyState>
   {:else}
+    {#if delete_error !== ''}
+      <InlineNotification
+        kind="error"
+        title="Oops"
+        subtitle="Something went wrong while deleting your data. {delete_error}"
+        on:close={()=>{delete_error=''}} />
+    {/if}
     <DataTable batchSelection bind:selectedRowIds headers={companies_headers} rows={$Companies} zebra sortable>
       <Toolbar>
         <ToolbarBatchActions>
@@ -96,19 +112,16 @@
         <ToolbarContent>
           <ToolbarSearch />
           <ToolbarMenu>
-            <ToolbarMenuItem primaryFocus>Restart all</ToolbarMenuItem>
-            <ToolbarMenuItem href="https://cloud.ibm.com/docs/loadbalancer-service">
-              API documentation
+            <ToolbarMenuItem primaryFocus>Company settings</ToolbarMenuItem>
+            <ToolbarMenuItem href="https://github.com/myangga/carbonkit">
+              Documentation
             </ToolbarMenuItem>
-            <ToolbarMenuItem danger>Stop all</ToolbarMenuItem>
           </ToolbarMenu>
           <Button on:click={() => (open = true)}>Create company</Button>
         </ToolbarContent>
       </Toolbar>
     </DataTable>
   {/if}
-<!-- {:catch error}
-  <InlineNotification kind="error" title="Error:" subtitle="Something went wrong while fetching data. {error}" /> -->
 {/if}
 
 <Modal
@@ -121,10 +134,16 @@
   on:close
   on:submit={createCompany}
 >
+{#if (insert_error !== '')}
+  <InlineNotification
+    kind="error"
+    title="Oops"
+    subtitle="Something went wrong while inserting data. {insert_error}"
+    on:close={()=>{insert_error = ''}} />
+{/if}
 <FluidForm>
   <TextInput labelText="Name" bind:value={name}></TextInput>
   <TextInput labelText="Unique identifier" bind:value={numero_registre}></TextInput>
   <TextInput labelText="VAT number" bind:value={numero_tva}></TextInput>
-  <!-- <Button type="submit">Add</Button> -->
 </FluidForm>
 </Modal>

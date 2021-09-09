@@ -14,15 +14,9 @@ export const Companies = readable( null, (set) => {
     const subscription = supabase
         .from('companies')
         .on('INSERT', (payload) => {
-            // payload.evenType
-            // payload.new
-            // payload.old
             set([...get(Companies), payload.new])
         })
         .on('DELETE', (payload) => {
-            // payload.evenType
-            // payload.new
-            // payload.old
             set(get(Companies).filter(x =>{return x.id != payload.old.id}))
         })
         .subscribe()
@@ -36,16 +30,8 @@ export class Company {
         this.numero_tva = numero_tva ?? ''
     }
 
-    static async getAllCompanies() {
-        const {data, error} = await supabase
-            .from('companies')
-            .select()
-        if (error) throw new Error(error.message)
-        return data
-    }
-
     async insert () {
-        if (!this.name || this.name.length < 1) return false
+        if (!this.name || this.name.length < 1) return
         const { data, error } = await supabase
             .from('companies')
             .insert([this])
@@ -54,12 +40,13 @@ export class Company {
     }
 
     static async deleteById (companyid) {
-        if (!companyid || companyid.length < 0) return false
+        if (!companyid || companyid.length < 0) return
         const { data, error } = await supabase
             .from('companies')
             .delete()
-            .match({'id': companyid})
+            .eq('id', companyid)
         if (error) throw new Error(error.message)
+        if (data.length == 0) throw Error("Error: No data has been deleted. Check row-level security for table \"companies\", or check item still exists.")
         return data
     }
 
