@@ -123,8 +123,8 @@
 >
 <FluidForm>
   <TextInput labelText="Name" bind:value={name}></TextInput>
-  <TextInput labelText="Numéro de Registre du Commerce" bind:value={numero_registre}></TextInput>
-  <TextInput labelText="Numéro TVA" bind:value={numero_tva}></TextInput>
+  <TextInput labelText="Unique identifier" bind:value={numero_registre}></TextInput>
+  <TextInput labelText="VAT number" bind:value={numero_tva}></TextInput>
   <!-- <Button type="submit">Add</Button> -->
 </FluidForm>
 </Modal>
