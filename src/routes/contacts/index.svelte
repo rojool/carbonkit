@@ -1,88 +1,94 @@
 <script>
-  import supabase from '$lib/db';
-  import Delete16 from "carbon-icons-svelte/lib/Delete16";
+  // import class and store
+  import { Contact, Contacts } from './contact'
+  // import empty state control for intial state
+  import EmptyState from '$lib/EmptyState.svelte'
+  // import icons from CDS
+  import Delete16 from 'carbon-icons-svelte/lib/Delete16'
+  import Add16 from 'carbon-icons-svelte/lib/Add16'
+  // import CDS components required
   import {
+    Button,
+    DataTable,
+    DatePicker,
+    DatePickerInput,
+    Form,
+    FormGroup,
     InlineLoading,
     InlineNotification,
-    Button,
     Modal,
-    DataTable,
-    Toolbar,
-    ToolbarContent,
-    ToolbarSearch,
-    ToolbarMenu,
-    ToolbarMenuItem,
-    ToolbarBatchActions,
-    Form,
-    TextInput,
     Select,
     SelectItem,
-    Pagination
-  } from 'carbon-components-svelte';
-  import { Contact } from './contact';
-
-  let newContact = new Contact();
-  let submit = false;
-  let deletion = false;
-  let update = true;
-  let open = false;
-  let rows = [];
-
+    TextInput,
+    Toolbar,
+    ToolbarBatchActions,
+    ToolbarContent,
+    ToolbarMenu,
+    ToolbarMenuItem,
+    ToolbarSearch,
+  } from 'carbon-components-svelte'
+  // declare variables
+  let newContact = new Contact()
+  let insert_error = ''
+  let delete_error = ''
+  let open = false
+  let rows = []
+  let selectedRowIds = []
+  // Set empty texts and actions for intial state
+  const contact_empty = {
+        title: 'Start adding some contacts',
+        description: 'Your contact list is empty. Please click on <strong>Create new contact</strong> to start.',
+        actionText: 'Create a new contact',
+        annexe: 'You also can ',
+        linkHref: '/contacts',
+        linkText: 'create new contact'
+    }
+  // set table headers
   let contacts_headers = [
     {key: 'gender', value: 'Gender'},
-    {key: 'firstname', value: 'Firstname'},
     {key: 'lastname', value: 'Lastname'},
+    {key: 'firstname', value: 'Firstname'},
     {key: 'birthdate', value: 'Birthdate'},
     {key: 'email', value: 'Email'},
     {key: 'type', value: 'Type'},
-  ];
+  ]
 
-  let selectedRowIds = [];
-
-  $: console.table(rows)
-  // $: console.log("selectedRowIds", selectedRowIds);
-
-  async function getData() {
-    const { data, error } = await supabase
-      .from('contacts')
-      .select()
-      .order('id', { ascending: false })
-    if (error) throw new Error(error.message)
-    return data
+  // function: create new contact
+  async function createContact() {
+    // insert instance to database via class function
+    newContact
+      .insert()
+      .then(()=>{
+        // reset variables
+        newContact = new Contact()
+        // close modal
+        open = false
+      })
+      .catch(error=>{
+          insert_error = error
+        })
   }
-
-  async function deleteSelectedContacts() {
-    update = false
-    if (selectedRowIds.length == 0) return
-    selectedRowIds.forEach(
-      async (currentValue) => {
-        console.log(currentValue)
-        const { data, error } = await supabase
-          .from('contacts')
-          .delete()
-          .match({id: currentValue})
-        if (error) throw new Error(error.message)
-        update = true
-        return data
-      }
-    )
+  // function: batch delete companies
+  async function deleteContacts () {
+    // iterate through selection
+    selectedRowIds.forEach(id => {
+      // delete from db related contact
+      Contact
+        .deleteById(id)
+        .then(()=>{
+          // throw back to console for testing
+          console.log('%s deleted', id)
+        })
+        .catch(error=>{
+          delete_error = error
+          console.log('error on delete: ', error)
+        })
+    });
+    // reset selection after deletion
     selectedRowIds = []
+    return
   }
 
-  async function sendData() {
-    update = false
-    // remove id for insert
-    delete newContact.id;
-    const { data, error } = await supabase
-    .from('contacts')
-    .insert([
-      newContact
-    ])
-    if (error) throw new Error(error.message)
-    newContact = new Contact()
-    update = true
-    return data
-  }
 </script>
 
 <svelte:head>
@@ -91,57 +97,37 @@
 
 <h1>Contacts</h1>
 
-{#if submit}
-  {#await sendData()}
-    <InlineLoading description="Sending data..." />
-  {:then data}
-    <InlineNotification kind="success" title="Success:" subtitle="Succesfully sent data."  />
-  {:catch error}
-    <InlineNotification kind="error" title="Error:" subtitle="Something went wrong while sending the data. {error}" />
-  {/await}
-{/if}
-
-{#if deletion}
-  {#await deleteSelectedContacts()}
-    <InlineLoading description="Deleting data..." />
-  {:then data}
-    <InlineNotification kind="success" title="Success:" subtitle="Succesfully deleted data." hideCloseButton=false />
-  {:catch error}
-    <InlineNotification kind="error" title="Error:" subtitle="Something went wrong while sending the data. {error}" hideCloseButton=false />
-  {/await}
-{/if}
-
-{#if update}
-  {#await getData()}
-    <InlineLoading description="Fetching data..." />
-  {:then data}
-    {#if data.length == 0}
-      <InlineNotification kind="info" title="Information" subtitle="No data to display" hideCloseButton=true />
-    {:else}
-      <DataTable batchSelection bind:selectedRowIds headers={contacts_headers} rows={data}>
-        <Toolbar>
-          <ToolbarBatchActions>
-            <Button icon={Delete16} on:click={() =>{deletion = true; submit = false}}>Delete</Button>
-          </ToolbarBatchActions>
-          <ToolbarContent>
-            <ToolbarSearch />
-            <ToolbarMenu>
-              <ToolbarMenuItem primaryFocus>Restart all</ToolbarMenuItem>
-              <ToolbarMenuItem href="https://cloud.ibm.com/docs/loadbalancer-service">
-                API documentation
-              </ToolbarMenuItem>
-              <ToolbarMenuItem danger>Stop all</ToolbarMenuItem>
-            </ToolbarMenu>
-            <Button on:click={() => (open = true)}>Create contact</Button>
-          </ToolbarContent>
-        </Toolbar>
-      </DataTable>
-      <Pagination totalItems={111} pageSizes={[10, 15, 20]} />
+{#if $Contacts == null}
+  <InlineLoading description="Fetching data..." />
+{:else}
+  {#if $Contacts .length < 1}
+  <EmptyState emptyData={contact_empty} bind:modalAddOpen={open}></EmptyState>
+  {:else}
+    {#if delete_error !== ''}
+      <InlineNotification
+        kind="error"
+        title="Oops"
+        subtitle="Something went wrong while deleting your data. {delete_error}"
+        on:close={()=>{delete_error=''}} />
     {/if}
-  {:catch error}
-    <p>Something went wrong while fetching the data:</p>
-    <InlineNotification title="Error:" subtitle={error} hideCloseButton=true />
-  {/await}
+    <DataTable batchSelection bind:selectedRowIds headers={contacts_headers} rows={$Contacts} zebra sortable>
+      <Toolbar>
+        <ToolbarBatchActions>
+          <Button icon={Delete16} on:click={deleteContacts} >Delete</Button>
+        </ToolbarBatchActions>
+        <ToolbarContent>
+          <ToolbarSearch />
+          <ToolbarMenu>
+            <ToolbarMenuItem primaryFocus>Contacts settings</ToolbarMenuItem>
+            <ToolbarMenuItem href="https://github.com/myangga/carbonkit">
+              Documentation
+            </ToolbarMenuItem>
+          </ToolbarMenu>
+          <Button icon={Add16} on:click={() => (open = true)}>Create contact</Button>
+        </ToolbarContent>
+      </Toolbar>
+    </DataTable>
+  {/if}
 {/if}
 
 <Modal
@@ -149,25 +135,47 @@
   modalHeading="Create contact"
   primaryButtonText="Confirm"
   secondaryButtonText="Cancel"
-  on:click:button--secondary={() => (open = false)}
-  on:open={()=>{submit = false; deletion = false;}}
+  on:click:button--secondary={() => {open = false}}
+  on:open={()=>{}}
   on:close
-  on:submit={() => {submit = true; open = false;}}
->
-<Form>
-  <InlineNotification kind="warning" title="Warning" subtitle="You can't add rows to database for now. Sorry ;-)" hideCloseButton=true />
-  <Select labelText="Gender" bind:selected={newContact.gender}>
-    <SelectItem value="Mr" text="Mr" />
-    <SelectItem value="Ms" text="Ms" />
-  </Select>
-  <TextInput labelText="Firstname" placeholder="Firstname..." bind:value={newContact.firstname} required />
-  <TextInput labelText="Lastname" placeholder="Lastname..." bind:value={newContact.lastname} required />
-  <TextInput labelText="Birth date" placeholder="Birth date..." bind:value={newContact.birthdate} required />
-  <TextInput labelText="Email" placeholder="Email..." bind:value={newContact.email} required />
-  <Select labelText="Gender" bind:selected={newContact.type}>
-    <SelectItem value="Prospect" text="Prospect" />
-    <SelectItem value="Client" text="Client" />
-    <SelectItem value="Administrative" text="Administrative" />
-  </Select>
-</Form>
+  on:submit={createContact}
+  >
+  {#if (insert_error !== '')}
+  <InlineNotification
+    kind="error"
+    title="Oops"
+    subtitle="Something went wrong while inserting data. {insert_error}"
+    on:close={()=>{insert_error = ''}} />
+  {/if}
+    <Form>
+      <FormGroup>
+        <Select labelText="Gender" bind:selected={newContact.gender}>
+          <SelectItem value="" text="Please select a gender" />
+          <SelectItem value="Mr" text="Mr" />
+          <SelectItem value="Ms" text="Ms" />
+        </Select>
+      </FormGroup>
+      <FormGroup>
+        <TextInput labelText="Firstname" placeholder="Firstname..." bind:value={newContact.firstname} required />
+      </FormGroup>
+      <FormGroup>
+        <TextInput labelText="Lastname" placeholder="Lastname..." bind:value={newContact.lastname} required />
+      </FormGroup>
+      <FormGroup>
+        <DatePicker datePickerType="single" on:change bind:value={newContact.birthdate}>
+          <DatePickerInput labelText="Birth date" placeholder="mm/dd/yyyy" />
+        </DatePicker>
+      </FormGroup>
+      <FormGroup>
+        <TextInput labelText="Email" placeholder="Email..." bind:value={newContact.email} required />
+      </FormGroup>
+      <FormGroup>
+        <Select labelText="Contact type" bind:selected={newContact.type}>
+          <SelectItem value="" text="Please select a type" />
+          <SelectItem value="Prospect" text="Prospect" />
+          <SelectItem value="Client" text="Client" />
+          <SelectItem value="Administrative" text="Administrative" />
+        </Select>
+      </FormGroup>
+    </Form>
 </Modal>

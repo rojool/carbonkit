@@ -5,6 +5,7 @@ export const Companies = readable( null, (set) => {
     supabase
         .from('companies')
         .select('*')
+        .order('name', { ascending: true })
         .then(({error, data}) =>{
             if (error) throw new Error(error.message)
             set(data)
@@ -24,6 +25,7 @@ export const Companies = readable( null, (set) => {
 })
 
 export class Company {
+
     constructor(name, numero_registre, numero_tva) {
         this.name = name ?? 'Acme'
         this.numero_registre = numero_registre ?? ''

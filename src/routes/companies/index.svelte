@@ -1,25 +1,27 @@
 <script>
-  // import supabase from '$lib/db'
+  // import class and store
   import { Company, Companies } from './company'
   // import empty state control for intial state
   import EmptyState from '$lib/EmptyState.svelte'
   // import icons from CDS
   import Delete16 from 'carbon-icons-svelte/lib/Delete16'
+  import Add16 from 'carbon-icons-svelte/lib/Add16'
   // import CDS components required
   import {
+    Button,
+    DataTable,
+    Form,
+    FormGroup,
     InlineLoading,
     InlineNotification,
-    FluidForm,
-    TextInput,
-    Button,
     Modal,
-    DataTable,
+    TextInput,
     Toolbar,
+    ToolbarBatchActions,
     ToolbarContent,
-    ToolbarSearch,
     ToolbarMenu,
     ToolbarMenuItem,
-    ToolbarBatchActions,
+    ToolbarSearch,
   } from 'carbon-components-svelte'
   // declare variables
   let name = ''
@@ -40,7 +42,7 @@
     }
   // set table headers
   const companies_headers = [
-    {key: 'id', value: 'ID'},
+    // {key: 'id', value: 'ID'},
     {key: 'name', value: 'Name'},
     {key: 'numero_registre', value: 'Unique identifier'},
     {key: 'numero_tva', value: 'VAT number'},
@@ -112,12 +114,12 @@
         <ToolbarContent>
           <ToolbarSearch />
           <ToolbarMenu>
-            <ToolbarMenuItem primaryFocus>Company settings</ToolbarMenuItem>
+            <ToolbarMenuItem primaryFocus>Companies settings</ToolbarMenuItem>
             <ToolbarMenuItem href="https://github.com/myangga/carbonkit">
               Documentation
             </ToolbarMenuItem>
           </ToolbarMenu>
-          <Button on:click={() => (open = true)}>Create company</Button>
+          <Button icon={Add16} on:click={() => (open = true)}>Create company</Button>
         </ToolbarContent>
       </Toolbar>
     </DataTable>
@@ -133,17 +135,23 @@
   on:open={()=>{}}
   on:close
   on:submit={createCompany}
->
-{#if (insert_error !== '')}
-  <InlineNotification
-    kind="error"
-    title="Oops"
-    subtitle="Something went wrong while inserting data. {insert_error}"
-    on:close={()=>{insert_error = ''}} />
-{/if}
-<FluidForm>
-  <TextInput labelText="Name" bind:value={name}></TextInput>
-  <TextInput labelText="Unique identifier" bind:value={numero_registre}></TextInput>
-  <TextInput labelText="VAT number" bind:value={numero_tva}></TextInput>
-</FluidForm>
+  >
+  {#if (insert_error !== '')}
+    <InlineNotification
+      kind="error"
+      title="Oops"
+      subtitle="Something went wrong while inserting data. {insert_error}"
+      on:close={()=>{insert_error = ''}} />
+  {/if}
+  <Form>
+    <FormGroup>
+      <TextInput labelText="Name" bind:value={name}></TextInput>
+    </FormGroup>
+    <FormGroup>
+      <TextInput labelText="Unique identifier" bind:value={numero_registre}></TextInput>
+    </FormGroup>
+    <FormGroup>
+      <TextInput labelText="VAT number" bind:value={numero_tva}></TextInput>
+    </FormGroup>
+  </Form>
 </Modal>
