@@ -1,4 +1,33 @@
 import supabase from '$lib/db'
+import {readable, get} from 'svelte/store'
+
+export const Companies = readable( null, (set) => {
+    supabase
+        .from('companies')
+        .select('*')
+        .then(({error, data}) =>{
+            if (error) throw new Error(error.message)
+            set(data)
+        })
+
+    // add subscription to supabase logic
+    const subscription = supabase
+        .from('companies')
+        .on('INSERT', (payload) => {
+            // payload.evenType
+            // payload.new
+            // payload.old
+            set([...get(Companies), payload.new])
+        })
+        .on('DELETE', (payload) => {
+            // payload.evenType
+            // payload.new
+            // payload.old
+            set(get(Companies).filter(x =>{return x.id != payload.old.id}))
+        })
+        .subscribe()
+  return () => supabase.removeSubscription(subscription)
+})
 
 export class Company {
     constructor(name, numero_registre, numero_tva) {

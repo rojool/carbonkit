@@ -9,6 +9,11 @@
     border-right: 1px solid var(--cds-ui-03);
 }
 
+.bx--side-nav__overlay-active
+{
+    z-index: 10;
+}
+
 .bx--modal
 {
     width: 100%;
@@ -72,6 +77,15 @@ a.bx--side-nav__link:hover .bx--side-nav__icon>svg,
 a.bx--side-nav__link--current:hover .bx--side-nav__icon>svg
 {
     fill: var(--cds-brand-01);
+}
+
+.bx--data-table th.bx--table-column-checkbox {
+    width: 3.2rem;
+}
+
+.bx--data-table thead th.bx--table-column-checkbox, .bx--data-table tbody td.bx--table-column-checkbox{
+    padding-right: 1rem;
+    padding-left: .6rem;
 }
 
 .overlay
