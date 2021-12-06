@@ -3,6 +3,8 @@
 This is a template project for creating SvelteKit application with IBM Carbon Design System implementation.
 
 > This is a work in progress
+> INSERT/DELETE on Companies and Contacts in real time
+> Next is UPDATE with details page for both companies and contacts
 
 > Just started to implement Supabase https://supabase.io/ to get/send data with CarbonKit
 
