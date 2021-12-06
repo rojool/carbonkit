@@ -14,6 +14,9 @@
     DatePickerInput,
     Form,
     FormGroup,
+    Grid,
+    Row,
+    Column,
     InlineLoading,
     InlineNotification,
     Modal,
@@ -112,15 +115,13 @@
     <DataTable batchSelection bind:selectedRowIds headers={contacts_headers} rows={$Contacts} zebra sortable>
       <Toolbar>
         <ToolbarBatchActions>
-          <Button icon={Delete16} on:click={deleteContacts} >Delete</Button>
+          <Button icon={Delete16} on:click={deleteContacts}>Delete</Button>
         </ToolbarBatchActions>
         <ToolbarContent>
           <ToolbarSearch />
           <ToolbarMenu>
             <ToolbarMenuItem primaryFocus>Contacts settings</ToolbarMenuItem>
-            <ToolbarMenuItem href="https://github.com/myangga/carbonkit">
-              Documentation
-            </ToolbarMenuItem>
+            <ToolbarMenuItem href="https://github.com/myangga/carbonkit">Documentation</ToolbarMenuItem>
           </ToolbarMenu>
           <Button icon={Add16} on:click={() => (open = true)}>Create contact</Button>
         </ToolbarContent>
@@ -150,34 +151,54 @@
     on:close={()=>{insert_error = ''}} />
   {/if}
     <Form>
-      <FormGroup>
-        <Select labelText="Gender" bind:selected={newContact.gender}>
-          <SelectItem value="" text="Please select a gender" />
-          <SelectItem value="Mr" text="Mr" />
-          <SelectItem value="Ms" text="Ms" />
-        </Select>
-      </FormGroup>
-      <FormGroup>
-        <TextInput labelText="Firstname" placeholder="Firstname..." bind:value={newContact.firstname} required />
-      </FormGroup>
-      <FormGroup>
-        <TextInput labelText="Lastname" placeholder="Lastname..." bind:value={newContact.lastname} required />
-      </FormGroup>
-      <FormGroup>
-        <DatePicker datePickerType="single" on:change bind:value={newContact.birthdate}>
-          <DatePickerInput labelText="Birth date" placeholder="mm/dd/yyyy" />
-        </DatePicker>
-      </FormGroup>
-      <FormGroup>
-        <TextInput labelText="Email" placeholder="Email..." bind:value={newContact.email} required />
-      </FormGroup>
-      <FormGroup>
-        <Select labelText="Contact type" bind:selected={newContact.type}>
-          <SelectItem value="" text="Please select a type" />
-          <SelectItem value="Prospect" text="Prospect" />
-          <SelectItem value="Client" text="Client" />
-          <SelectItem value="Administrative" text="Administrative" />
-        </Select>
-      </FormGroup>
+      <Grid narrow>
+        <Row>
+          <Column>
+            <FormGroup>
+              <TextInput labelText="Firstname" placeholder="Firstname..." bind:value={newContact.firstname} required />
+            </FormGroup>
+          </Column>
+          <Column>
+            <FormGroup>
+              <TextInput labelText="Lastname" placeholder="Lastname..." bind:value={newContact.lastname} required />
+            </FormGroup>
+          </Column>
+        </Row>
+        <Row>
+          <Column>
+            <FormGroup>
+              <TextInput labelText="Email" placeholder="Email..." bind:value={newContact.email} required />
+            </FormGroup>
+          </Column>
+          <Column>
+            <FormGroup>
+              <DatePicker datePickerType="single" on:change bind:value={newContact.birthdate}>
+                <DatePickerInput labelText="Birth date" placeholder="mm/dd/yyyy" />
+              </DatePicker>
+            </FormGroup>
+          </Column>
+        </Row>
+        <Row>
+          <Column>
+            <FormGroup>
+              <Select labelText="Gender" bind:selected={newContact.gender}>
+                <SelectItem value="" text="Please select a gender" />
+                <SelectItem value="Mr" text="Mr" />
+                <SelectItem value="Ms" text="Ms" />
+              </Select>
+            </FormGroup>
+          </Column>
+          <Column>
+            <FormGroup>
+              <Select labelText="Contact type" bind:selected={newContact.type}>
+                <SelectItem value="" text="Please select a type" />
+                <SelectItem value="Prospect" text="Prospect" />
+                <SelectItem value="Client" text="Client" />
+                <SelectItem value="Administrative" text="Administrative" />
+              </Select>
+            </FormGroup>
+          </Column>
+        </Row>
+      </Grid>
     </Form>
 </Modal>
